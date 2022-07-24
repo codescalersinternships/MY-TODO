@@ -10,76 +10,72 @@ import (
 	"github.com/omar-sherif9992/todo-api/pkg/utils"
 )
 
-var NewBook models.Book
+var NewTodo models.Todo
 
-func GetTodo(w http.ResponseWriter, r *http.Request) {
-	Books := models.GetAllBooks()
-	res, _ := json.Marshal(Books)
+func GetTodos(w http.ResponseWriter, r *http.Request) {
+	Todos := models.GetAllTodos()
+	res, _ := json.Marshal(Todos)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
-func GetBookById(w http.ResponseWriter, r *http.Request) {
+func GetTodoById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	bookId, err := strconv.ParseInt(vars["bookId"], 0, 0)
+	todoId, err := strconv.ParseInt(vars["todoId"], 0, 0)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	Books := models.GetBookById(bookId)
-	res, _ := json.Marshal(Books)
+	todo := models.GetTodoById(todoId)
+	res, _ := json.Marshal(todo)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
 
-func CreateBook(w http.ResponseWriter, r *http.Request) {
-	newBook := &models.Book{}
-	utils.ParseBody(r, newBook)
-	b := newBook.CreateBook()
+func CreateTodo(w http.ResponseWriter, r *http.Request) {
+	newTodo := &models.Todo{}
+	utils.ParseBody(r, newTodo)
+	b := newTodo.CreateTodo()
 	w.WriteHeader(http.StatusCreated)
 	res, _ := json.Marshal(b)
 	w.Write(res)
 }
-func DeleteBook(w http.ResponseWriter, r *http.Request) {
+func DeleteTodo(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	bookId, err := strconv.ParseInt(vars["bookId"], 0, 0)
+	todoId, err := strconv.ParseInt(vars["bookId"], 0, 0)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	Books := models.DeleteBook(bookId)
-	res, _ := json.Marshal(Books)
+	todo := models.DeleteTodo(todoId)
+	res, _ := json.Marshal(todo)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
-func UpdateBook(w http.ResponseWriter, r *http.Request) {
-	var updateBook = &models.Book{}
-	utils.ParseBody(r, updateBook)
+func UpdateTodo(w http.ResponseWriter, r *http.Request) {
+	var updateTodo = &models.Todo{}
+	utils.ParseBody(r, updateTodo)
 	vars := mux.Vars(r)
-	bookId, err := strconv.ParseInt(vars["bookId"], 0, 0)
+	todoId, err := strconv.ParseInt(vars["todoId"], 0, 0)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	bookDetails := models.GetBookById(bookId)
-	if updateBook.Title != "" {
-		bookDetails.Title = updateBook.Title
+	todoDetails := models.GetTodoById(todoId)
+	if updateTodo.Task != "" {
+		todoDetails.Task = updateTodo.Task
 	}
-	if updateBook.Author != "" {
-		bookDetails.Author = updateBook.Author
+	if updateTodo.Author != "" {
+		todoDetails.Author = updateTodo.Author
 	}
-	if updateBook.Year != 0 {
-		bookDetails.Year = updateBook.Year
+	if updateTodo.Status != "" {
+		todoDetails.Status = updateTodo.Status
 	}
-	if updateBook.Publication != "" {
-		bookDetails.Publication = updateBook.Publication
-	}
-	models.Save(bookDetails)
-	res, _ := json.Marshal(bookDetails)
+	models.Save(todoDetails)
+	res, _ := json.Marshal(todoDetails)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
-
 }

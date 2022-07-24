@@ -17,7 +17,7 @@ RUN go mod download
 COPY . .
 
 ENV PORT 8080
-ENV API_URL https://localhost:
+ENV API_URL https://localhost
 ENV API_VERSION v1
 
 RUN go build -o main

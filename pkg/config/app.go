@@ -3,9 +3,8 @@ package config
 import (
 	"fmt"
 
-	_ "github.com/jinzhu/gorm/dialects/mysql"
-
-	"github.com/jinzhu/gorm"
+	"gorm.io/driver/sqlite" // Sqlite driver based on GGO
+	"gorm.io/gorm"
 )
 
 var (
@@ -14,7 +13,7 @@ var (
 
 func Connect() {
 
-	database, err := gorm.Open("mysql", "omar:hell1@tcp(127.0.0.1:3306)/dbname?charset=utf8mb4&parseTime=True&loc=Local") // todo: change to env variables
+	database, err := gorm.Open(sqlite.Open("database/todo.db"), &gorm.Config{})
 	if err != nil {
 		fmt.Print(err)
 		panic(err)
