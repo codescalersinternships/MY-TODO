@@ -20,7 +20,7 @@ jobs:
     
     - name: mod file matches the source code in the module
       run: go mod tidy  
-        
+
     - name: Build compiles the packages, along with their dependencies
       run: go build  
     
@@ -34,7 +34,7 @@ jobs:
       run: go test -v ./...
 
     - name: run check test code coverage
-      run: go test -v ./parser/*.go -race -coverprofile=coverage.out -covermode=atomic
+      run: go test -v ./*.go -race -coverprofile=coverage.out -covermode=atomic
         
     - name: upload coverage to Codecov
       uses: codecov/codecov-action@v2
