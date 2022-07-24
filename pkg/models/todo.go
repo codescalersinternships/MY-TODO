@@ -12,7 +12,7 @@ type Todo struct {
 	gorm.Model
 	Task   string `gorm:""json:"task"`
 	Author string `json:"author"`
-	Status string `json:"status"`
+	Status bool   `json:"status"`
 }
 
 func init() {
@@ -31,14 +31,15 @@ func GetAllTodos() []Todo {
 	db.Find(&books)
 	return books
 }
-func GetTodo(id int64) Todo {
-	var todo Todo
-	db.First(&todo, id)
-	return todo
-}
+
 func GetTodoById(id int64) *Todo {
 	var todo Todo
 	db.First(&todo, id).Where("ID = ?", id)
+	return &todo
+}
+func GetTodoByAuthor(author string) *Todo {
+	var todo Todo
+	db.First(&todo, author).Where("author = ?", author)
 	return &todo
 }
 
