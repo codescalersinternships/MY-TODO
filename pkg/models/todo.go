@@ -9,9 +9,9 @@ import (
 
 var db *gorm.DB
 
-type Book struct {
+type Todo struct {
 	gorm.Model
-	Title       string `gorm:""json:"title"` //
+	username    string `gorm:""json:"title"` //
 	Author      string `json:"author"`
 	Year        int    `json:"year"`
 	Publication string `json:"publication"`

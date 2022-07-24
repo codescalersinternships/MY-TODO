@@ -23,3 +23,6 @@ go.work
 ### Go Patch ###
 /vendor/
 /Godeps/
+
+# environment variables used by go build
+.env/
