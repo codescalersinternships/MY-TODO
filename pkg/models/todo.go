@@ -1,8 +1,6 @@
 package models
 
 import (
-	"fmt"
-
 	"gorm.io/gorm"
 
 	"github.com/omar-sherif9992/todo-api/pkg/config"
@@ -21,7 +19,6 @@ func init() {
 	config.Connect() //
 	db = config.GetDB()
 	db.AutoMigrate(&Todo{})
-	fmt.Print("Database connected")
 }
 
 func (b *Todo) CreateTodo() *Todo {

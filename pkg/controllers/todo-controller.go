@@ -43,7 +43,7 @@ func CreateTodo(w http.ResponseWriter, r *http.Request) {
 }
 func DeleteTodo(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	todoId, err := strconv.ParseInt(vars["bookId"], 0, 0)
+	todoId, err := strconv.ParseInt(vars["todoId"], 0, 0)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
