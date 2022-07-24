@@ -18,12 +18,16 @@ jobs:
       with:
         go-version: 1.18
     
+    - name: Build compiles the packages, along with their dependencies
+      run: go build  
+    
+
+    - name: Install dependencies
+      run: go get -v ./...
+      
     - name: mod file matches the source code in the module
       run: go mod tidy    
     
-    - name: Install dependencies
-      run: go get -v ./...
-
     - name: run tests
       run: go test -v ./...
 

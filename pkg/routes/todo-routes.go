@@ -11,5 +11,5 @@ var RegisterTodoRoutes = func(version string, router *mux.Router) {
 	router.HandleFunc("/api/"+version+"/todo/author/{author}", controllers.GetTodoByAuthor).Methods("GET")
 	router.HandleFunc("/api/"+version+"/todo", controllers.CreateTodo).Methods("POST")
 	router.HandleFunc("/api/"+version+"/todo/id/{todoId}", controllers.UpdateTodo).Methods("PUT")
-	router.HandleFunc("/api/"+version+"/todo/{id/todoId}", controllers.DeleteTodo).Methods("DELETE")
+	router.HandleFunc("/api/"+version+"/todo/id/{todoId}", controllers.DeleteTodo).Methods("DELETE")
 }

@@ -46,8 +46,9 @@ func GetTodoById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	vars := mux.Vars(r)
+
 	todoId, err := strconv.ParseInt(vars["todoId"], 0, 0)
-	fmt.Println(vars["todoId"])
+	fmt.Println(vars)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
