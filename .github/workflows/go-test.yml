@@ -1,0 +1,28 @@
+name: Running Tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.18
+
+    - name: run tests
+      run: go test -v ./...
+
+    - name: run check test code coverage
+      run: go test -v ./parser/*.go -race -coverprofile=coverage.out -covermode=atomic
+        
+    - name: upload coverage to Codecov
+      uses: codecov/codecov-action@v2
