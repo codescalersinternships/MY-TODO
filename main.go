@@ -19,6 +19,18 @@ func init() {
 	}
 }
 
+// @title TODO API
+// @version 1.0
+// @description This is a TODO API server.
+
+// @contact.name OMAR SHERIF ALI
+// @contact.url https://osa-portfolio.vercel.app/
+// @contact.email omar.sherif9992@gmail.com
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:8080
 func main() {
 
 	var envs map[string]string
@@ -31,7 +43,7 @@ func main() {
 	port := ":" + envs["PORT"]
 	api_url := envs["API_URL"]
 	router := mux.NewRouter()
-	routes.RegisterTodoRoutes(envs["API_VERSION"]+"", router)
+	routes.RegisterTodoRoutes(api_url, port, envs["API_VERSION"]+"", router)
 	fmt.Println("Server started on port " + api_url + port)
 	log.Fatal(http.ListenAndServe(port, router))
 

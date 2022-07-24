@@ -13,22 +13,42 @@ import (
 
 var NewTodo models.Todo
 
+// go mod tidy && swag init --parseDependency --parseInternal
+
+// GetTodos godoc
+// @Summary get all items in the todo list
+// @Description Get all todos
+// @ID get-all-todos
+// @Produce json
+// @Success 200 {object} models.Todo
+// @Failure 405 {object} string "Method not allowed"
+// @Router /api/v1/todos [get]
 func GetTodos(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
-		return
+	} else {
+
+		Todos := models.GetAllTodos()
+		res, _ := json.Marshal(Todos)
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+
+		w.Write(res)
 	}
-	Todos := models.GetAllTodos()
-	res, _ := json.Marshal(Todos)
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(res)
 }
 
-// CreateTodo is a function that creates a new todo
+// CreateTodo godoc
+// @Summary create a new todo
+// @Description create a todo
+// @ID create-todo
+// @Produce json
+// @Success 201 {object} models.Todo
+// @Failure 405 {object} string "Bad Request"
+// @Router /api/v1/todo [post]
 func CreateTodo(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
+		w.Write([]byte("Method not allowed"))
 		return
 	}
 	newTodo := &models.Todo{}
@@ -39,7 +59,16 @@ func CreateTodo(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-// GetTodoById is a function that gets a todo by id
+// GetTodoById godoc
+// @Summary get todo item by id
+// @Description get todo item by id
+// @ID get-todo-by-id
+// @Produce json
+// @Param id path string true "todo ID"
+// @Success 200 {object} models.Todo
+// @Failure 405 {object} string "Method not allowed"
+// @Failure 400 {object} string "Bad Request"
+// @Router /api/v1/todo/{id} [get]
 func GetTodoById(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -60,7 +89,15 @@ func GetTodoById(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-// GetTodoByAuthor is a function that gets a todo by author
+// GetTodoByAuthor godoc
+// @Summary add a new item to the todo list
+// @ID create-todo
+// @Produce json
+// @Param Author body todo true "todo Author"
+// @Success 200 {object} models.Todo
+// @Failure 405 {object} string "Method not allowed"
+// @Failure 400 {object} "Bad Request"
+// @Router /todo [post]
 func GetTodoByAuthor(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -79,7 +116,14 @@ func GetTodoByAuthor(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-// DeleteTodo is a function that deletes a todo
+// DeleteTodo godoc
+// @Summary delete a todo item by ID
+// @ID delete-todo-by-id
+// @Produce json
+// @Param id path string true "todo ID"
+// @Success 200 {object} models.Todo
+// @Failure 404 {object} message
+// @Router  /api/v1/todo/{id} [delete]
 func DeleteTodo(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "DELETE" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -98,7 +142,15 @@ func DeleteTodo(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
-// Save is a function that saves a todo
+// UpdateTodo godoc
+// @Summary update a todo item by ID
+// @ID update-todo-by-id
+// @Produce json
+// @Param id path string true "todo ID"
+// @Success 200 {object} models.Todo
+// @Failure 404 {object} "Method not allowed"
+// @Failure 400 {object} "Bad Request"
+// @Router  /api/v1/todo/{id} [put]
 func UpdateTodo(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "PUT" {
 		w.WriteHeader(http.StatusMethodNotAllowed)

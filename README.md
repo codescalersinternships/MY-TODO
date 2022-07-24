@@ -12,19 +12,20 @@ go run !(*_test).go
 ```
 
 
-## All Functions
+## All Controller Functions
 
 * `CreateTodo() ` : Insert a `Todo` object to the list of Tasks .
 * `DeleteTodos()` :Insert a `Todo` object to the list of Tasks .
 * `UpdateTodo()` Insert a `Todo` object to the list of Tasks
 * `GetTodos()` list of all Tasks Objects
 * `GetTodoById()` list Task by ID
+* `GetTodoByAuthor()` list Task by author
 
 
 ## Run App through Docker Image 
 
 * Run App through
-  * via Docker Hub by pulling Image (visit the link if you want <placeholder>)
+  * via Docker Hub by pulling Image (visit the link if you want [<Docker-Hub-omarsherif9992](https://hub.docker.com/repository/docker/omarsherif9992/todo/general))
     * `docker login` : (optional no need because it is public) login to your docker account
     * `docker pull omarsherif9992/todo:v1` : (only once) pull the image from the Docker hub Repo
   * == or ==
