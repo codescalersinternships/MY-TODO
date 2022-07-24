@@ -21,19 +21,16 @@ jobs:
     - name: mod file matches the source code in the module
       run: go mod tidy  
 
-    - name: Build compiles the packages, along with their dependencies
-      run: go build  
-    
-
     - name: Install dependencies
       run: go get -v ./...
 
-
-    
-    - name: run tests
+    - name: Build compiles the packages, along with their dependencies
+      run: go build  
+        
+    - name: Run tests
       run: go test -v ./...
 
-    - name: run check test code coverage
+    - name: Run check test code coverage
       run: go test -v ./*.go -race -coverprofile=coverage.out -covermode=atomic
         
     - name: upload coverage to Codecov
