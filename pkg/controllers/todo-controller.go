@@ -77,7 +77,6 @@ func GetTodoById(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	todoId, err := strconv.ParseInt(vars["todoId"], 0, 0)
-	fmt.Println(vars)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -104,12 +103,10 @@ func GetTodoByAuthor(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	vars := mux.Vars(r)
-	todoAuthor, err := strconv.ParseInt(vars["author"], 0, 0)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		return
-	}
-	todo := models.GetTodoById(todoAuthor)
+	todoAuthor := vars["author"]
+	fmt.Print(todoAuthor)
+
+	todo := models.GetTodoByAuthor(todoAuthor)
 	res, _ := json.Marshal(todo)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)

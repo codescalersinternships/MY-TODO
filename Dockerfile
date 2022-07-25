@@ -20,6 +20,7 @@ COPY . .
 ENV PORT 8080
 ENV API_URL https://localhost
 ENV API_VERSION v1
+ENV ORIGIN_ALLOWED  http://localhost:3000/*
 
 RUN go build 
 

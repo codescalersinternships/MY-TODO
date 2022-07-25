@@ -3,11 +3,12 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/omar-sherif9992/todo-api/pkg/controllers"
-	"github.com/omar-sherif9992/todo-api/pkg/models"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/omar-sherif9992/todo-api/pkg/controllers"
+	"github.com/omar-sherif9992/todo-api/pkg/models"
 )
 
 func TestCreateTodo(t *testing.T) {

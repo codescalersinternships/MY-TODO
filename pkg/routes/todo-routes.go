@@ -9,6 +9,7 @@ import (
 )
 
 var RegisterTodoRoutes = func(api_url, port, version string, router *mux.Router) {
+
 	router.HandleFunc("/api/"+version+"/todos", controllers.GetTodos).Methods("GET")
 	router.HandleFunc("/api/"+version+"/todo/id/{todoId}", controllers.GetTodoById).Methods("GET")
 	router.HandleFunc("/api/"+version+"/todo/author/{author}", controllers.GetTodoByAuthor).Methods("GET")

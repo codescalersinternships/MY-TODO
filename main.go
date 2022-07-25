@@ -4,7 +4,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
+	"github.com/gorilla/handlers"
 	_ "github.com/omar-sherif9992/todo-api/docs"
 
 	"github.com/gorilla/mux"
@@ -42,11 +44,16 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
+	headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})
+	originsOk := handlers.AllowedOrigins([]string{"*"})
+	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
 	port := ":" + envs["PORT"]
 	api_url := envs["API_URL"]
 	router := mux.NewRouter()
 	routes.RegisterTodoRoutes(api_url, port, envs["API_VERSION"]+"", router)
 	fmt.Println("Server started on port " + api_url + port)
-	log.Fatal(http.ListenAndServe(port, router))
+	// start server listen
+	// with error handling
+	log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), handlers.CORS(originsOk, headersOk, methodsOk)(router)))
 
 }
