@@ -27,20 +27,20 @@ func (b *Todo) CreateTodo() *Todo {
 }
 
 func GetAllTodos() []Todo {
-	var books []Todo
-	db.Find(&books)
-	return books
+	var todos []Todo
+	db.Find(&todos)
+	return todos
 }
 
 func GetTodoById(id int64) *Todo {
 	var todo Todo
-	db.First(&todo, id).Where("ID = ?", id)
+	db.First(&todo).Where("ID = ?", id)
 	return &todo
 }
-func GetTodoByAuthor(author string) *Todo {
-	var todo Todo
-	db.First(&todo, author).Where("author = ?", author)
-	return &todo
+func GetTodoByAuthor(author string) []Todo {
+	var todos []Todo
+	db.Find(&todos).Where("author = ?", author)
+	return todos
 }
 
 func DeleteTodo(id int64) Todo {

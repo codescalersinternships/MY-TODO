@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"strconv"
 
@@ -104,10 +103,9 @@ func GetTodoByAuthor(w http.ResponseWriter, r *http.Request) {
 	}
 	vars := mux.Vars(r)
 	todoAuthor := vars["author"]
-	fmt.Print(todoAuthor)
 
-	todo := models.GetTodoByAuthor(todoAuthor)
-	res, _ := json.Marshal(todo)
+	todos := models.GetTodoByAuthor(todoAuthor)
+	res, _ := json.Marshal(todos)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
