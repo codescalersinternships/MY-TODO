@@ -90,14 +90,14 @@ func GetTodoById(w http.ResponseWriter, r *http.Request) {
 }
 
 // GetTodoByAuthor godoc
-// @Summary add a new item to the todo list
-// @ID create-todo
+// @Summary Get a todo item by Author
+// @ID ger-todo-by-Author
 // @Produce json
-// @Param Author body todo true "todo Author"
+// @Param id path string true "todo Author"
 // @Success 200 {object} models.Todo
 // @Failure 405 {object} string "Method not allowed"
-// @Failure 400 {object} "Bad Request"
-// @Router /todo [post]
+// @Failure 400 {object} string "Bad Request"
+// @Router  /api/v1/todo/{author} [get]
 func GetTodoByAuthor(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -122,7 +122,8 @@ func GetTodoByAuthor(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Param id path string true "todo ID"
 // @Success 200 {object} models.Todo
-// @Failure 404 {object} message
+// @Failure 405 {object} string "Method not allowed"
+// @Failure 400 {object} string "Bad Request"
 // @Router  /api/v1/todo/{id} [delete]
 func DeleteTodo(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "DELETE" {
@@ -148,8 +149,8 @@ func DeleteTodo(w http.ResponseWriter, r *http.Request) {
 // @Produce json
 // @Param id path string true "todo ID"
 // @Success 200 {object} models.Todo
-// @Failure 404 {object} "Method not allowed"
-// @Failure 400 {object} "Bad Request"
+// @Failure 404 {object} string "Method not allowed"
+// @Failure 400 {object} string "Bad Request"
 // @Router  /api/v1/todo/{id} [put]
 func UpdateTodo(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "PUT" {

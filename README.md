@@ -12,7 +12,7 @@ go run !(*_test).go
 ```
 
 
-## All Controller Functions
+## All Controller Functions ([API DOCUMENTATION](http://localhost:8080/swagger/doc.json))
 
 * `CreateTodo() ` : Insert a `Todo` object to the list of Tasks .
 * `DeleteTodos()` :Insert a `Todo` object to the list of Tasks .

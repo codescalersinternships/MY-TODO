@@ -5,6 +5,8 @@ import (
 	"log"
 	"net/http"
 
+	_ "github.com/omar-sherif9992/todo-api/docs"
+
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"github.com/omar-sherif9992/todo-api/pkg/routes"

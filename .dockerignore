@@ -1,0 +1,5 @@
+# to specify which folders & files should not be copied from the local machine 
+# because they are not needed, because we overwrite them with the ones from the npm install
+node_modules
+Dockerfile
+.git

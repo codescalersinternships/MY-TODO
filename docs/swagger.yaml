@@ -1,0 +1,171 @@
+definitions:
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  models.Todo:
+    properties:
+      author:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      status:
+        type: boolean
+      task:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: omar.sherif9992@gmail.com
+    name: OMAR SHERIF ALI
+    url: https://osa-portfolio.vercel.app/
+  description: This is a TODO API server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  title: TODO API
+  version: "1.0"
+paths:
+  /api/v1/todo:
+    post:
+      description: create a todo
+      operationId: create-todo
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Todo'
+        "405":
+          description: Bad Request
+          schema:
+            type: string
+      summary: create a new todo
+  /api/v1/todo/{author}:
+    get:
+      operationId: ger-todo-by-Author
+      parameters:
+      - description: todo Author
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Todo'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "405":
+          description: Method not allowed
+          schema:
+            type: string
+      summary: Get a todo item by Author
+  /api/v1/todo/{id}:
+    delete:
+      operationId: delete-todo-by-id
+      parameters:
+      - description: todo ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Todo'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "405":
+          description: Method not allowed
+          schema:
+            type: string
+      summary: delete a todo item by ID
+    get:
+      description: get todo item by id
+      operationId: get-todo-by-id
+      parameters:
+      - description: todo ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Todo'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "405":
+          description: Method not allowed
+          schema:
+            type: string
+      summary: get todo item by id
+    put:
+      operationId: update-todo-by-id
+      parameters:
+      - description: todo ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Todo'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Method not allowed
+          schema:
+            type: string
+      summary: update a todo item by ID
+  /api/v1/todos:
+    get:
+      description: Get all todos
+      operationId: get-all-todos
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Todo'
+        "405":
+          description: Method not allowed
+          schema:
+            type: string
+      summary: get all items in the todo list
+swagger: "2.0"
