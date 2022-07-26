@@ -34,12 +34,12 @@ func GetAllTodos() []Todo {
 
 func GetTodoById(id int64) *Todo {
 	var todo Todo
-	db.First(&todo).Where("ID = ?", id)
+	db.First(&todo, id)
 	return &todo
 }
 func GetTodoByAuthor(author string) []Todo {
 	var todos []Todo
-	db.Find(&todos).Where("author = ?", author)
+	db.Where("author = ?", author).Find(&todos)
 	return todos
 }
 
