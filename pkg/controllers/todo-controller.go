@@ -5,7 +5,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/gorilla/mux"
 	"github.com/omar-sherif9992/todo-api/pkg/models"
 	"github.com/omar-sherif9992/todo-api/pkg/utils"
 )
@@ -14,32 +13,80 @@ var NewTodo models.Todo
 
 // go mod tidy && swag init --parseDependency --parseInternal
 
-// GetTodos godoc
+// GetTodo godoc
 // @Summary get all items in the todo list
 // @Description Get all todos
 // @ID get-all-todos
 // @Produce json
+// @Param id query int false "id"
+// @Param author query string false "author name"
 // @Success 200 {object} models.Todo
 // @Failure 405 {object} string "Method not allowed"
-// @Router /api/v1/todos [get]
-func GetTodos(w http.ResponseWriter, r *http.Request) {
+// @Failure 400 {object} string "Bad Request"
+// @Router /api/v1/todo [get]
+func GetTodo(w http.ResponseWriter, r *http.Request) {
+
 	if r.Method != "GET" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 	} else {
+		todoIdQuery := r.URL.Query().Get("id")
+		todoAuthor := r.URL.Query().Get("author")
+		if todoIdQuery != "" {
+			getTodoById(w, r)
+		} else if todoAuthor != "" {
+			getTodoByAuthor(w, r)
+		} else {
 
-		Todos := models.GetAllTodos()
-		res, _ := json.Marshal(Todos)
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusOK)
+			Todos := models.GetAllTodos()
+			res, _ := json.Marshal(Todos)
+			w.Header().Set("Content-Type", "application/json")
+			w.WriteHeader(http.StatusOK)
 
-		w.Write(res)
+			w.Write(res)
+		}
 	}
+}
+func getTodoById(w http.ResponseWriter, r *http.Request) {
+
+	if r.Method != "GET" {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
+
+	todoIdQuery := r.URL.Query().Get("id")
+	todoId, err := strconv.ParseInt(todoIdQuery, 0, 0)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	todo := models.GetTodoById(todoId)
+	res, _ := json.Marshal(todo)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}
+
+func getTodoByAuthor(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "GET" {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
+	todoAuthor := r.URL.Query().Get("author")
+	todos := models.GetTodoByAuthor(todoAuthor)
+	res, _ := json.Marshal(todos)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
 }
 
 // CreateTodo godoc
 // @Summary create a new todo
 // @Description create a todo
 // @ID create-todo
+// @Body author string true "author"
+// @Body task string true "task"
+// @Body status boolean true "status"
 // @Produce json
 // @Success 201 {object} models.Todo
 // @Failure 405 {object} string "Bad Request"
@@ -52,81 +99,38 @@ func CreateTodo(w http.ResponseWriter, r *http.Request) {
 	}
 	newTodo := &models.Todo{}
 	utils.ParseBody(r, newTodo)
-	b := newTodo.CreateTodo()
-	w.WriteHeader(http.StatusCreated)
-	res, _ := json.Marshal(b)
-	w.Write(res)
-}
 
-// GetTodoById godoc
-// @Summary get todo item by id
-// @Description get todo item by id
-// @ID get-todo-by-id
-// @Produce json
-// @Param id path string true "todo ID"
-// @Success 200 {object} models.Todo
-// @Failure 405 {object} string "Method not allowed"
-// @Failure 400 {object} string "Bad Request"
-// @Router /api/v1/todo/{id} [get]
-func GetTodoById(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "GET" {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		return
-	}
-	vars := mux.Vars(r)
-
-	todoId, err := strconv.ParseInt(vars["todoId"], 0, 0)
-	if err != nil {
+	if newTodo.Author == "" {
 		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("author is required"))
+		return
+	} else if newTodo.Task == "" {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte("task is required"))
 		return
 	}
-	todo := models.GetTodoById(todoId)
+	todo := newTodo.CreateTodo()
+	w.WriteHeader(http.StatusCreated)
 	res, _ := json.Marshal(todo)
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(res)
-}
-
-// GetTodoByAuthor godoc
-// @Summary Get a todo item by Author
-// @ID ger-todo-by-Author
-// @Produce json
-// @Param id path string true "todo Author"
-// @Success 200 {object} models.Todo
-// @Failure 405 {object} string "Method not allowed"
-// @Failure 400 {object} string "Bad Request"
-// @Router  /api/v1/todo/{author} [get]
-func GetTodoByAuthor(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "GET" {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-		return
-	}
-	vars := mux.Vars(r)
-	todoAuthor := vars["author"]
-
-	todos := models.GetTodoByAuthor(todoAuthor)
-	res, _ := json.Marshal(todos)
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
 
 // DeleteTodo godoc
-// @Summary delete a todo item by ID
+// @Summary delete a todo item by id
 // @ID delete-todo-by-id
 // @Produce json
-// @Param id path string true "todo ID"
+// @Param id query string true "id"
 // @Success 200 {object} models.Todo
 // @Failure 405 {object} string "Method not allowed"
 // @Failure 400 {object} string "Bad Request"
-// @Router  /api/v1/todo/{id} [delete]
+// @Router  /api/v1/todo?id=1 [delete]
 func DeleteTodo(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "DELETE" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
-	vars := mux.Vars(r)
-	todoId, err := strconv.ParseInt(vars["todoId"], 0, 0)
+	todoIdQuery := r.URL.Query().Get("id")
+	todoId, err := strconv.ParseInt(todoIdQuery, 0, 0)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
@@ -142,11 +146,11 @@ func DeleteTodo(w http.ResponseWriter, r *http.Request) {
 // @Summary update a todo item by ID
 // @ID update-todo-by-id
 // @Produce json
-// @Param id path string true "todo ID"
+// @Param id query string true "id"
 // @Success 200 {object} models.Todo
 // @Failure 404 {object} string "Method not allowed"
 // @Failure 400 {object} string "Bad Request"
-// @Router  /api/v1/todo/{id} [put]
+// @Router  /api/v1/todo?id=1 [put]
 func UpdateTodo(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "PUT" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -154,8 +158,9 @@ func UpdateTodo(w http.ResponseWriter, r *http.Request) {
 	}
 	var updateTodo = &models.Todo{}
 	utils.ParseBody(r, updateTodo)
-	vars := mux.Vars(r)
-	todoId, err := strconv.ParseInt(vars["todoId"], 0, 0)
+	todoIdQuery := r.URL.Query().Get("id")
+	// accces query params
+	todoId, err := strconv.ParseInt(todoIdQuery, 0, 0)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
