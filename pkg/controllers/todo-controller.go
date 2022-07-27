@@ -123,7 +123,7 @@ func CreateTodo(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} models.Todo
 // @Failure 405 {object} string "Method not allowed"
 // @Failure 400 {object} string "Bad Request"
-// @Router  /api/v1/todo?id=1 [delete]
+// @Router  /api/v1/todo [delete]
 func DeleteTodo(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "DELETE" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -150,7 +150,7 @@ func DeleteTodo(w http.ResponseWriter, r *http.Request) {
 // @Success 200 {object} models.Todo
 // @Failure 404 {object} string "Method not allowed"
 // @Failure 400 {object} string "Bad Request"
-// @Router  /api/v1/todo?id=1 [put]
+// @Router  /api/v1/todo [put]
 func UpdateTodo(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "PUT" {
 		w.WriteHeader(http.StatusMethodNotAllowed)

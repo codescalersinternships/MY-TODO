@@ -17,9 +17,11 @@ go run !(*_test).go
 * `CreateTodo() ` : Insert a `Todo` object to the list of Tasks .
 * `DeleteTodos()` :Insert a `Todo` object to the list of Tasks .
 * `UpdateTodo()` Insert a `Todo` object to the list of Tasks
-* `GetTodos()` list of all Tasks Objects
-* `GetTodoById()` list Task by ID
-* `GetTodoByAuthor()` list Task by author
+* `GetTodos()` list of all Tasks Objects , you supply the Query filters if you want to filter
+  * `filters`
+    * `id`: `int`
+    * `author`: `string`  
+
 
 
 ## Run App through Docker Image 

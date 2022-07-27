@@ -25,82 +25,25 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/api/v1/todo": {
-            "post": {
-                "description": "create a todo",
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "create a new todo",
-                "operationId": "create-todo",
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "schema": {
-                            "$ref": "#/definitions/models.Todo"
-                        }
-                    },
-                    "405": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/todo/{author}": {
             "get": {
+                "description": "Get all todos",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Get a todo item by Author",
-                "operationId": "ger-todo-by-Author",
+                "summary": "get all items in the todo list",
+                "operationId": "get-all-todos",
                 "parameters": [
                     {
-                        "type": "string",
-                        "description": "todo Author",
+                        "type": "integer",
+                        "description": "id",
                         "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Todo"
-                        }
+                        "in": "query"
                     },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "405": {
-                        "description": "Method not allowed",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/todo/{id}": {
-            "get": {
-                "description": "get todo item by id",
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "get todo item by id",
-                "operationId": "get-todo-by-id",
-                "parameters": [
                     {
                         "type": "string",
-                        "description": "todo ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
+                        "description": "author name",
+                        "name": "author",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -133,9 +76,9 @@ const docTemplate = `{
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "todo ID",
+                        "description": "id",
                         "name": "id",
-                        "in": "path",
+                        "in": "query",
                         "required": true
                     }
                 ],
@@ -160,18 +103,40 @@ const docTemplate = `{
                     }
                 }
             },
+            "post": {
+                "description": "create a todo",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "create a new todo",
+                "operationId": "create-todo",
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/models.Todo"
+                        }
+                    },
+                    "405": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
             "delete": {
                 "produces": [
                     "application/json"
                 ],
-                "summary": "delete a todo item by ID",
+                "summary": "delete a todo item by id",
                 "operationId": "delete-todo-by-id",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "todo ID",
+                        "description": "id",
                         "name": "id",
-                        "in": "path",
+                        "in": "query",
                         "required": true
                     }
                 ],
@@ -186,30 +151,6 @@ const docTemplate = `{
                         "description": "Bad Request",
                         "schema": {
                             "type": "string"
-                        }
-                    },
-                    "405": {
-                        "description": "Method not allowed",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/todos": {
-            "get": {
-                "description": "Get all todos",
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "get all items in the todo list",
-                "operationId": "get-all-todos",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/models.Todo"
                         }
                     },
                     "405": {
