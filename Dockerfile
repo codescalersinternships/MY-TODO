@@ -24,7 +24,7 @@ ENV ORIGIN_ALLOWED  http://localhost:3000/*
 
 RUN go build 
 
-CMD ["go","run","main"]
+CMD ["go","run","main.go"]
 
 
 

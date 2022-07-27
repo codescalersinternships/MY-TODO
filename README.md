@@ -39,10 +39,10 @@ go run !(*_test).go
   
 * To Run Container and create persistant named volume
   * In attach mode (For debugging & running in foreground)
-    * `docker run -it -p 3000:8080 -v todo-list:/app/list --rm --name todo-app todo:v1` : (run it when you need to run the app)to create then run a conainer called (TODO_APP) and when it stops it gets deleted automatically but terminal get stuck
+    * `docker run -it -p 8080:8080 -v todo-db:/app/database --rm --name todo-app todo:v1` : (run it when you need to run the app)to create then run a conainer called (TODO_APP) and when it stops it gets deleted automatically but terminal get stuck
   * ==or==
   * In detach mode (For running in background)
-    * `docker run -d -p 3000:8080 -v todo-db:/app/database --rm --name todo-app todo:v1` : to create then run a conainer called (TODO_APP) and when it stops it gets deleted automatically & created a volume so that your data will persist even if you 
+    * `docker run -d -p 8080:8080 -v todo-db:/app/database --rm --name todo-app todo:v1` : to create then run a conainer called (TODO_APP) and when it stops it gets deleted automatically & created a volume so that your data will persist even if you 
 
 * `docker stop todo-app`: to exit or stop the container and it will get deleted automatic
 * `docker rmi todo:v1`: to delete the image but you need to remove its relative containers first (which are removed automatically when you stop them)
