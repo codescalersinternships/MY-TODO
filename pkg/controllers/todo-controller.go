@@ -103,7 +103,8 @@ func getTodoByAuthor(w http.ResponseWriter, r *http.Request) {
 // @Body status boolean true "status"
 // @Produce json
 // @Success 201 {object} models.Todo
-// @Failure 405 {object} string "Bad Request"
+// @Failure 400 {object} string "Bad Request"
+// @Failure 405 {object} string "Method not allowed"
 // @Router /api/v1/todo [post]
 func CreateTodoHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
@@ -155,10 +156,16 @@ func DeleteTodoHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	res, _ := json.Marshal(todo)
+	res, err := json.Marshal(todo)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusNoContent)
 	w.Write(res)
+
+	//w.Write(res)
 }
 
 // UpdateTodo godoc
