@@ -26,7 +26,7 @@ func TestCreateTodo(t *testing.T) {
 		//In order to test our server, we will need a Request to send in and we'll want to spy on what our handler writes to the ResponseWriter
 		response := httptest.NewRecorder()
 
-		controllers.CreateTodo(response, request)
+		controllers.CreateTodoHandler(response, request)
 
 		assertStatus(t, response.Code, http.StatusCreated)
 	})
@@ -40,7 +40,7 @@ func TestCreateTodo(t *testing.T) {
 		//In order to test our server, we will need a Request to send in and we'll want to spy on what our handler writes to the ResponseWriter
 		response := httptest.NewRecorder()
 
-		controllers.CreateTodo(response, request)
+		controllers.CreateTodoHandler(response, request)
 		// check statu
 		assertStatus(t, response.Code, http.StatusBadRequest)
 		// check body
@@ -57,7 +57,7 @@ func TestCreateTodo(t *testing.T) {
 		//In order to test our server, we will need a Request to send in and we'll want to spy on what our handler writes to the ResponseWriter
 		response := httptest.NewRecorder()
 
-		controllers.CreateTodo(response, request)
+		controllers.CreateTodoHandler(response, request)
 
 		// check status code
 		assertStatus(t, response.Code, http.StatusBadRequest)
@@ -74,17 +74,17 @@ func TestGetAllTodos(t *testing.T) {
 		//In order to test our server, we will need a Request to send in and we'll want to spy on what our handler writes to the ResponseWriter
 		response := httptest.NewRecorder()
 
-		controllers.GetTodo(response, request)
+		controllers.GetTodoHandler(response, request)
 
 		assertStatus(t, response.Code, http.StatusOK)
 	})
 	t.Run("returns todo by using GetTodos with http method not allowed", func(t *testing.T) {
 		// We use http.NewRequest to create a request. The first argument is the request's method and the second is the request's path. The nil argument refers to the request's body, which we don't need to set in this case.
-		request, _ := http.NewRequest(http.MethodPost, "/api/v1/todo/id/2", nil)
+		request, _ := http.NewRequest(http.MethodPost, "/api/v1/todo", nil)
 		// In order to test our server, we will need a Request to send in and we'll want to spy on what our handler writes to the ResponseWriter
 		response := httptest.NewRecorder()
 
-		controllers.GetTodo(response, request)
+		controllers.GetTodoHandler(response, request)
 
 		assertStatus(t, response.Code, http.StatusMethodNotAllowed)
 	})
@@ -101,7 +101,7 @@ func TestGetTodoByID(t *testing.T) {
 		q := request.URL.Query()
 		q.Add("id", "1")
 		request.URL.RawQuery = q.Encode()
-		controllers.GetTodo(response, request)
+		controllers.GetTodoHandler(response, request)
 
 		assertStatus(t, response.Code, http.StatusOK)
 	})
@@ -111,7 +111,7 @@ func TestGetTodoByID(t *testing.T) {
 		// In order to test our server, we will need a Request to send in and we'll want to spy on what our handler writes to the ResponseWriter
 		response := httptest.NewRecorder()
 
-		controllers.GetTodo(response, request)
+		controllers.GetTodoHandler(response, request)
 
 		assertStatus(t, response.Code, http.StatusMethodNotAllowed)
 	})
@@ -129,7 +129,7 @@ func TestGetTodoByAuthor(t *testing.T) {
 		query := request.URL.Query()
 		query.Add("author", "omar")
 		request.URL.RawQuery = query.Encode()
-		controllers.GetTodo(response, request)
+		controllers.GetTodoHandler(response, request)
 
 		assertStatus(t, response.Code, http.StatusOK)
 	})
@@ -142,7 +142,7 @@ func TestGetTodoByAuthor(t *testing.T) {
 		// In order to test our server, we will need a Request to send in and we'll want to spy on what our handler writes to the ResponseWriter
 		response := httptest.NewRecorder()
 
-		controllers.GetTodo(response, request)
+		controllers.GetTodoHandler(response, request)
 
 		assertStatus(t, response.Code, http.StatusMethodNotAllowed)
 	})
@@ -162,7 +162,7 @@ func TestUpdateTodo(t *testing.T) {
 		query.Add("task", "I want to learn go")
 		query.Add("status", "true")
 		request.URL.RawQuery = query.Encode()
-		controllers.GetTodo(response, request)
+		controllers.GetTodoHandler(response, request)
 
 		assertStatus(t, response.Code, http.StatusOK)
 	})
@@ -175,7 +175,7 @@ func TestUpdateTodo(t *testing.T) {
 		// In order to test our server, we will need a Request to send in and we'll want to spy on what our handler writes to the ResponseWriter
 		response := httptest.NewRecorder()
 
-		controllers.GetTodo(response, request)
+		controllers.GetTodoHandler(response, request)
 
 		assertStatus(t, response.Code, http.StatusMethodNotAllowed)
 	})
@@ -194,9 +194,9 @@ func TestDeleteTodo(t *testing.T) {
 		query.Add("id", "1")
 
 		request.URL.RawQuery = query.Encode()
-		controllers.DeleteTodo(response, request)
+		controllers.DeleteTodoHandler(response, request)
 
-		assertStatus(t, response.Code, http.StatusOK)
+		assertStatus(t, response.Code, http.StatusNoContent)
 	})
 	t.Run("delete todo by DeleteTodo  with http method not allowed because it is not DELETE method", func(t *testing.T) {
 		// We use http.NewRequest to create a request. The first argument is the request's method and the second is the request's path. The nil argument refers to the request's body, which we don't need to set in this case.
@@ -207,7 +207,7 @@ func TestDeleteTodo(t *testing.T) {
 		// In order to test our server, we will need a Request to send in and we'll want to spy on what our handler writes to the ResponseWriter
 		response := httptest.NewRecorder()
 
-		controllers.DeleteTodo(response, request)
+		controllers.DeleteTodoHandler(response, request)
 
 		assertStatus(t, response.Code, http.StatusMethodNotAllowed)
 	})
@@ -218,7 +218,7 @@ func TestDeleteTodo(t *testing.T) {
 		// In order to test our server, we will need a Request to send in and we'll want to spy on what our handler writes to the ResponseWriter
 		response := httptest.NewRecorder()
 
-		controllers.DeleteTodo(response, request)
+		controllers.DeleteTodoHandler(response, request)
 
 		assertStatus(t, response.Code, http.StatusBadRequest)
 	})

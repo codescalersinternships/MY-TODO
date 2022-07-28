@@ -1,10 +1,13 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
+	"sync"
 
 	"github.com/gorilla/handlers"
 	_ "github.com/omar-sherif9992/todo-api/docs"
@@ -49,11 +52,42 @@ func main() {
 	methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
 	port := ":" + envs["PORT"]
 	api_url := envs["API_URL"]
+	version := envs["API_VERSION"] + ""
 	router := mux.NewRouter()
-	routes.RegisterTodoRoutes(api_url, port, envs["API_VERSION"]+"", router)
+	routes.RegisterTodoRoutes(api_url, port, version, router)
 	fmt.Println("Server started on port " + api_url + port)
-	// start server listen
-	// with error handling
-	log.Fatal(http.ListenAndServe(":"+os.Getenv("PORT"), handlers.CORS(originsOk, headersOk, methodsOk)(router)))
+
+	server := &http.Server{Addr: port, Handler: handlers.CORS(originsOk, headersOk, methodsOk)(router)}
+
+	// Creating a waiting group that waits until the graceful shutdown procedure is done
+	var wg sync.WaitGroup
+	wg.Add(1)
+
+	// This goroutine is running in parallels to the main one
+	go func() {
+		// creating a channel to listen for signals, like SIGINT
+		stop := make(chan os.Signal, 1)
+		// subscribing to interruption signals
+		signal.Notify(stop, os.Interrupt)
+		// this blocks until the signal is received
+		<-stop
+		// initiating the shutdown
+		err := server.Shutdown(context.Background())
+		// can't do much here except for logging any errors
+		if err != nil {
+			log.Printf("error during shutdown: %v\n", err)
+		}
+		// notifying the main goroutine that we are done
+		wg.Done()
+	}()
+
+	err = server.ListenAndServe()
+	if err == http.ErrServerClosed { // graceful shutdown
+		log.Println("commencing server shutdown...")
+		wg.Wait()
+		log.Println("server was gracefully shut down.")
+	} else if err != nil {
+		log.Printf("server error: %v\n", err)
+	}
 
 }

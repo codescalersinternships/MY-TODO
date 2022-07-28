@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -23,8 +24,9 @@ var NewTodo models.Todo
 // @Success 200 {object} models.Todo
 // @Failure 405 {object} string "Method not allowed"
 // @Failure 400 {object} string "Bad Request"
+// @Failure 500 {object} string "Internal Server Error"
 // @Router /api/v1/todo [get]
-func GetTodo(w http.ResponseWriter, r *http.Request) {
+func GetTodoHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method != "GET" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
@@ -37,7 +39,11 @@ func GetTodo(w http.ResponseWriter, r *http.Request) {
 			getTodoByAuthor(w, r)
 		} else {
 
-			Todos := models.GetAllTodos()
+			Todos, err := models.GetAllTodos()
+			if err != nil {
+				w.WriteHeader(http.StatusInternalServerError)
+				return
+			}
 			res, _ := json.Marshal(Todos)
 			w.Header().Set("Content-Type", "application/json")
 			w.WriteHeader(http.StatusOK)
@@ -60,7 +66,11 @@ func getTodoById(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	todo := models.GetTodoById(todoId)
+	todo, err := models.GetTodoById(todoId)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	res, _ := json.Marshal(todo)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -73,7 +83,11 @@ func getTodoByAuthor(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	todoAuthor := r.URL.Query().Get("author")
-	todos := models.GetTodoByAuthor(todoAuthor)
+	todos, err := models.GetTodoByAuthor(todoAuthor)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	res, _ := json.Marshal(todos)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
@@ -91,7 +105,7 @@ func getTodoByAuthor(w http.ResponseWriter, r *http.Request) {
 // @Success 201 {object} models.Todo
 // @Failure 405 {object} string "Bad Request"
 // @Router /api/v1/todo [post]
-func CreateTodo(w http.ResponseWriter, r *http.Request) {
+func CreateTodoHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		w.Write([]byte("Method not allowed"))
@@ -109,6 +123,7 @@ func CreateTodo(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("task is required"))
 		return
 	}
+	fmt.Println("@create", newTodo)
 	todo := newTodo.CreateTodo()
 	w.WriteHeader(http.StatusCreated)
 	res, _ := json.Marshal(todo)
@@ -120,11 +135,11 @@ func CreateTodo(w http.ResponseWriter, r *http.Request) {
 // @ID delete-todo-by-id
 // @Produce json
 // @Param id query string true "id"
-// @Success 200 {object} models.Todo
+// @Success 204 {object} models.Todo
 // @Failure 405 {object} string "Method not allowed"
 // @Failure 400 {object} string "Bad Request"
 // @Router  /api/v1/todo [delete]
-func DeleteTodo(w http.ResponseWriter, r *http.Request) {
+func DeleteTodoHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "DELETE" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
@@ -135,10 +150,14 @@ func DeleteTodo(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	todo := models.DeleteTodo(todoId)
+	todo, err := models.DeleteTodo(todoId)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	res, _ := json.Marshal(todo)
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusNoContent)
 	w.Write(res)
 }
 
@@ -147,11 +166,11 @@ func DeleteTodo(w http.ResponseWriter, r *http.Request) {
 // @ID update-todo-by-id
 // @Produce json
 // @Param id query string true "id"
-// @Success 200 {object} models.Todo
+// @Success 202 {object} models.Todo
 // @Failure 404 {object} string "Method not allowed"
 // @Failure 400 {object} string "Bad Request"
 // @Router  /api/v1/todo [put]
-func UpdateTodo(w http.ResponseWriter, r *http.Request) {
+func UpdateTodoHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "PUT" {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
@@ -165,7 +184,12 @@ func UpdateTodo(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	todoDetails := models.GetTodoById(todoId)
+	todoDetails, err := models.GetTodoById(todoId)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
 	if updateTodo.Task != "" {
 		todoDetails.Task = updateTodo.Task
 	}
@@ -178,6 +202,17 @@ func UpdateTodo(w http.ResponseWriter, r *http.Request) {
 	models.Save(todoDetails)
 	res, _ := json.Marshal(todoDetails)
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusAccepted)
 	w.Write(res)
+}
+
+// ErrorNotFound godoc
+// @Summary not found
+// @ID not-found
+// @Produce json
+// @Failure 404 {object} string "Not Found"
+// @Router /api/v1/ [get]
+func ErrorNotFoundHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotFound)
+	w.Write([]byte("Not Found"))
 }

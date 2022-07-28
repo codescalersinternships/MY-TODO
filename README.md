@@ -12,12 +12,12 @@ go run !(*_test).go
 ```
 
 
-## All Controller Functions ([API DOCUMENTATION](http://localhost:8080/swagger/doc.json))
+## All Controller Functions ([API DOCUMENTATION](http://localhost:8080/swagger/))
 
 * `CreateTodo() ` : Insert a `Todo` object to the list of Tasks .
-* `DeleteTodos()` :Insert a `Todo` object to the list of Tasks .
+* `DeleteTodo()` :Insert a `Todo` object to the list of Tasks .
 * `UpdateTodo()` Insert a `Todo` object to the list of Tasks
-* `GetTodos()` list of all Tasks Objects , you supply the Query filters if you want to filter
+* `GetTodo()` list of all Tasks Objects , you supply the Query filters if you want to filter
   * `filters`
     * `id`: `int`
     * `author`: `string`  
