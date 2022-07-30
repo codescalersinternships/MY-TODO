@@ -27,8 +27,8 @@ services: # these services run in --rm  mode always by default , it runs in atta
     ports: # ports to expose on the container
       - "3000:5000"
     volumes:
-      - ./frontend/src:/app/src # mount the relative directory as a bind mount
-      - /app/node_modules # mount the absolute directory as a bind mount
+      - ./frontend/src:/usr/src/app/src # mount the relative directory as a bind mount
+      - /usr/src/app/node_modules # mount the absolute directory as a bind mount
     stdin_open: true # -i allow the container to be able to be open for input
     tty: true # -t allow the container to be able to be attached to via the terminal
     depends_on: # this service depends on the backend service to be up and running already

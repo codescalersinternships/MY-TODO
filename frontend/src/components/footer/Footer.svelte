@@ -88,6 +88,7 @@
   }
 
   .footer-social {
+    width: 45rem;
     padding-top: 25px;
     height: 80px;
     margin: 0 auto;
@@ -97,7 +98,8 @@
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-evenly;
-    gap:0.5rem;
+    gap:0.1rem;
+
   }
 
   .footer-social a {
@@ -108,6 +110,10 @@
     -moz-transition: all 1s linear;
     -ms-transition: all 1s linear;
     -o-transition: all 1s linear;
+  }
+  .footer-social a {
+   margin: -10px;
+   padding: 0;
   }
 
   .footer-social a:hover {
@@ -134,7 +140,7 @@
   ul {
     display: flex;
     flex-direction: row;
-    margin: auto;
+    justify-content: space-evenly;   
   }
 
 </style>

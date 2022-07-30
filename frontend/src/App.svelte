@@ -8,8 +8,8 @@
   import { SettingsStore } from "./stores";
   import Image from "./components/image/Image.svelte";
 
-  onMount(async function () {
-    $SettingsStore = await SettingsApi.getSettings();
+  onMount(function () {
+    $SettingsStore = SettingsApi.getSettings();
   });
   let rootElement: HTMLDivElement;
 
@@ -64,7 +64,7 @@
   }
   .body {
     background-color: var(--secondary-color);
-    max-height: 80vh;
+    max-height: 83vh;
     border-radius: 10px;
     padding: 4rem;
     width: 100%;
