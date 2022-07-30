@@ -47,14 +47,17 @@
       >
     </li>
     <li class="list-inline-item">
-      <a href="#" data-placement="top" title="About">About</a>
+      <a
+        href="https://osa-portfolio.vercel.app/"
+        data-placement="top"
+        title="About">About</a
+      >
     </li>
     <li class="list-inline-item">
-      <a href="#" data-placement="top" title="Home">Home</a>
-    </li>
-    <li class="list-inline-item">
-      <a href="#" data-placement="top" title="Privacy & Policy"
-        >Privacy & Policy</a
+      <a
+        href="https://osa-portfolio.vercel.app/about"
+        data-placement="top"
+        title="Home">Home</a
       >
     </li>
   </ul>
@@ -88,7 +91,7 @@
   }
 
   .footer-social {
-    width: 45rem;
+    width: 80%;
     padding-top: 25px;
     height: 80px;
     margin: 0 auto;
@@ -98,8 +101,7 @@
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-evenly;
-    gap:0.1rem;
-
+    gap: 0.1rem;
   }
 
   .footer-social a {
@@ -112,8 +114,8 @@
     -o-transition: all 1s linear;
   }
   .footer-social a {
-   margin: -10px;
-   padding: 0;
+    margin: -10px;
+    padding: 0;
   }
 
   .footer-social a:hover {
@@ -140,7 +142,6 @@
   ul {
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;   
+    justify-content: space-evenly;
   }
-
 </style>

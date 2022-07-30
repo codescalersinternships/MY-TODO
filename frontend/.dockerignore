@@ -10,3 +10,7 @@ Dockerfile
 .idea
 .vscode
 .vscodeignore
+README.md
+.eslintrc.cjs
+.eslintignore
+.env

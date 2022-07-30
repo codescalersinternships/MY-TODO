@@ -7,6 +7,7 @@
   import { onMount } from "svelte";
   import { SettingsStore } from "./stores";
   import Image from "./components/image/Image.svelte";
+  import Filters from "./components/filters/Filters.svelte";
 
   onMount(function () {
     $SettingsStore = SettingsApi.getSettings();
@@ -38,6 +39,10 @@
       </div>
       <Settings />
       <Form />
+      <div class="filters">
+        <Filters />
+      </div>
+
       <TodoList />
     </div>
   </div>
@@ -55,7 +60,6 @@
   .all {
     background-image: var(--background-image);
     min-height: 100vh;
-    min-width: 100vh;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
@@ -64,7 +68,7 @@
   }
   .body {
     background-color: var(--secondary-color);
-    max-height: 83vh;
+    max-height: 85vh;
     border-radius: 10px;
     padding: 4rem;
     width: 100%;
@@ -74,5 +78,18 @@
     text-align: center;
     height: 100px;
     margin-top: -100px;
+  }
+
+  /* MEDIA QUERIES  MEDIUM */
+
+  @media screen and (max-width: 1024px) {
+  }
+
+  /* MEDIA QUERIES  Small */
+
+  @media screen and (max-width: 800px) {
+    .filters {
+      display: none;
+    }
   }
 </style>

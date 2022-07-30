@@ -3,13 +3,7 @@
   import TodosDataService from "../../services/todo";
   import type { TodoType } from "../../types";
   import { TodoListStore, SettingsStore } from "../../stores";
-  // get todays date
-  const todayDate = new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
+
   let text = "";
   let btnDisabled = true;
   let min = 10;
@@ -17,11 +11,13 @@
   let validateInput = "";
   let error: Error;
   const handleInput = () => {
-    if (text.trim().length <= min) {
+    const textLength = text.trim().length;
+
+    if (textLength <= min) {
       message = `Text must be at least ${min} characters`;
       validateInput = "wrong-input";
       btnDisabled = true;
-    } else {
+    } else if (textLength > min) {
       message = null;
       btnDisabled = false;
       validateInput = "correct-input";
@@ -60,8 +56,6 @@
   <header>
     <h2>
       Hello , {name}
-      <br />
-      {todayDate}
     </h2>
   </header>
   <form on:submit|preventDefault={handleSubmit}>
@@ -71,6 +65,8 @@
         on:input={handleInput}
         bind:value={text}
         placeholder="Write your ideas now !"
+        maxlength="30"
+        minlength="10"
       />
       <button disabled={btnDisabled} class:btnDisabled type="submit">
         Submit

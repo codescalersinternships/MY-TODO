@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { TodoType } from "../../types";
-  import Filters from "./Filters.svelte";
   import TodosDataService from "../../services/todo";
   import { SettingsStore, TodoListStore } from "../../stores";
   import { onMount } from "svelte";
@@ -82,29 +81,7 @@ onMount(async function () {
   ).length;
   }
 
-  /* sort by date
-function sortByDate() {
-    $TodoListStore.sort((a: TodoType, b: TodoType): number => {
-      return new Date(b.CreatedAt) - new Date(a.CreatedAt);
-    });
-  }
-// filter by date range
-function filterByDateRange() {
-    $TodoListStore.filter((t: TodoType) => {
-      return new Date(t.CreatedAt) >= new Date("2020-01-01") &&
-        new Date(t.CreatedAt) <= new Date("2020-01-31");
-    });
-  }
   
-  // sort by complete status
-function sortByComplete(a: TodoType, b: TodoType) {
-    $TodoListStore.sort((x, y) => {
-      // true values first
-      return x === y ? 0 : x ? -1 : 1;
-      // false values first
-      // return (x === y)? 0 : x? 1 : -1;
-    });
-  } */
   $: currentPage=0;
 
 function triggerFlip(event:{detail: {page: number}}) {
@@ -115,14 +92,13 @@ function triggerFlip(event:{detail: {page: number}}) {
 {#if error || $TodoListStore.length === 0 || !tasksCount}
   <p class="list-status">No Items Exist {error}</p>
 {:else}
-  <Filters />
   <div class="list">
     <div class="status">
       <div class="date" />
       <div class="count">Tasks : {tasksDone}/{tasksCount}</div>
     </div>
     {#each $TodoListStore.slice(3*currentPage, 3*(currentPage+1)) as todo, index (todo.ID)}
-      <div in:scale out:fade={{ duration: 500 }}>
+      <div in:scale out:fade={{ duration: 400 }}>
         <Item
           counter={index + 1}
           id={todo.ID}
@@ -134,7 +110,7 @@ function triggerFlip(event:{detail: {page: number}}) {
         />
       </div>
     {/each}
-    <Paging  pageLength={(tasksCount / 3)+1} on:triggerFlip={triggerFlip} currentPage={currentPage}/>
+    <Paging  pageLength={Math.ceil(tasksCount / 3)} on:triggerFlip={triggerFlip} currentPage={currentPage}/>
   </div>
 {/if}
 

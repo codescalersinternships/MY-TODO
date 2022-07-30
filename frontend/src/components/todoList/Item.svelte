@@ -28,6 +28,7 @@
     readonly={status}
     on:keyup={({ key, target }) => key === "Enter" && target.blur()}
     on:blur={() => triggerUpdate()}
+    maxlength="30"
   />
   <input
     class="complete-checkbox"
@@ -35,8 +36,7 @@
     bind:checked={status}
     on:change={() => triggerUpdate()}
   />
-  <span class="created-at"> {new Date(CreatedAt).toLocaleDateString("en-US")}</span
-  >
+  <span class="created-at"> {new Date(CreatedAt).toLocaleDateString("en-US")}</span>
 </div>
 
 <style>
