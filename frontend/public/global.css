@@ -1,0 +1,24 @@
+:root {
+    --primary-color: #aaaa;
+    --secondary-color: #eee;
+    --text-color: #000;
+    --border-color: #000;
+}
+
+* {
+    color: var(--textColor);
+}
+
+html,
+body,
+* {
+    margin: 0;
+    padding: 0;
+    scroll-behavior: smooth;
+}
+
+
+a {
+    color: var(--text-color);
+    text-decoration: none;
+}

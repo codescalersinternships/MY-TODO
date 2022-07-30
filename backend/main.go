@@ -62,7 +62,6 @@ func main() {
 	// Creating a waiting group that waits until the graceful shutdown procedure is done
 	var wg sync.WaitGroup
 	wg.Add(1)
-
 	// This goroutine is running in parallels to the main one
 	go func() {
 		// creating a channel to listen for signals, like SIGINT
