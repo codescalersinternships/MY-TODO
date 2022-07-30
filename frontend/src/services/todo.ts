@@ -1,4 +1,4 @@
-import { SettingsStore } from './../stores';
+import { SettingsStore } from '../stores';
 import http from "./http-common";
 import type { TodoType } from "../types";
 import SettingsApi from "../components/settings/SettingsApi";

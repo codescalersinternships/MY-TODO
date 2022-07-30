@@ -10,16 +10,5 @@ COPY . .
 
 RUN npm run build
 
-###
-# Only copy over the Node pieces we need
-# ~> Saves 35MB
-###
-FROM node:14.15.0
-
-WORKDIR /app
-COPY --from=build /app .
-COPY . .
-
-
 EXPOSE 3000
-CMD ["node", "./app.js"]
+CMD ["npm", "run","dev"]

@@ -1,0 +1,12 @@
+**/node_modules/
+
+frontend/public/build/*
+
+.DS_Store
+.env
+**/.env
+*/.env
+
+.vscode
+**/.svelte-kit/
+**/package
