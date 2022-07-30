@@ -11,7 +11,7 @@
   let error = "";
 
   // Getting tasks
-  $: onMount(async function () {
+onMount(async function () {
     try {
       // todo make it uuid
       SettingsApi.updateSettings();
@@ -50,6 +50,11 @@
     await TodosDataService.delete(id);
     // todo set it to store
     TodoListStore.set($TodoListStore.filter((t: TodoType) => t.ID !== id));
+    tasksCount = $TodoListStore.length;
+    tasksDone = $TodoListStore.filter(
+    (t: TodoType) => t.status === true
+  ).length;
+
   }
 
   // Updating Tasks
@@ -72,7 +77,9 @@
         t.ID === id ? { ...t, status: status, task: task } : t
       )
     );
-    console.log($TodoListStore)
+    tasksDone = $TodoListStore.filter(
+    (t: TodoType) => t.status === true
+  ).length;
   }
 
   /* sort by date
@@ -101,7 +108,6 @@ function sortByComplete(a: TodoType, b: TodoType) {
   $: currentPage=0;
 
 function triggerFlip(event:{detail: {page: number}}) {
-  alert("page")
   currentPage = event.detail.page;
   }
 </script>

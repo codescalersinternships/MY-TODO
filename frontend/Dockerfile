@@ -1,14 +1,15 @@
-FROM node:14.15.0 as build
+FROM node:16
 
-# install dependencies
-WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm ci
+WORKDIR /usr/src/app
 
-# Copy all local files into the image.
+COPY package*.json ./
+
+RUN npm install
+
 COPY . .
 
-RUN npm run build
+EXPOSE 5000
 
-EXPOSE 3000
+ENV HOST=0.0.0.0
+
 CMD ["npm", "run","dev"]

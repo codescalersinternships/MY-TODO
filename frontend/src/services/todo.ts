@@ -13,9 +13,10 @@ class TodosDataService {
     public async getByAuthor(author: string): Promise<{ data: TodoType[] }> {
         if (author === null) {
             SettingsApi.updateSettings();
-            author = SettingsStore['name'];
+            author = SettingsStore['name'] === undefined ? 'unknown' : SettingsStore['name'];
             console.log("author was null", author);
         }
+        
         return await http.get(`/todo?author=${author.toLowerCase().replace("#", '')}`);
     }
     public async create(data: TodoType): Promise<{ data: TodoType }> {

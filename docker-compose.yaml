@@ -1,0 +1,54 @@
+version: "3.8" # notice we put a dash in front of things that are listed that are single valued unlike environment variables are key value pairs and didnt need a dash (-)
+services: # these services run in --rm  mode always by default , it runs in attach mode by default
+  backend: # backend service container
+    build: # build the image from the Dockerfile in the current directory
+      context: ./backend # the path of the directory that contains dockerfile
+      dockerfile: Dockerfile # the Dockerfile to use
+      # tag: backend # tag the image as backend  
+    image: todo-backend:v1 # we specify the image to use , it will be looked up locally and in Docker Hub Repository  
+    container_name: 'backend' # name of the container
+    ports: # ports to expose on the container
+      - "8080:8080" # expose port 8080 on the container
+    volumes:
+      - database:/app/database # mount a volume on the container, the volume will be created if it doesn't exist
+      - ./backend:/app # mount the relative directory as a bind mount
+      - /app/node_modules # mount the absolute directory as a bind mount
+    env_file:
+      - './backend/.env' # load environment variables from a file
+    networks: # you dont need to define a network because docker compose automatically creates a network for you a new environment for all the services specified in this compose file and it will add all the services to that network 
+      - todo-net # now backend is added to the default network && goals-net network too  
+  frontend: # frontend service container
+    build: # build the image from the Dockerfile in the current directory
+      context: ./frontend # the path of the directory that contains dockerfile
+      dockerfile: Dockerfile # the Dockerfile to use
+      # tag: frontend # tag the image as frontend  
+    image: todo-frontend:v1 # we specify the image to use , it will be looked up locally and in Docker Hub Repository  
+    container_name: 'frontend' # name of the container
+    ports: # ports to expose on the container
+      - "3000:5000"
+    volumes:
+      - ./frontend/src:/app/src # mount the relative directory as a bind mount
+      - /app/node_modules # mount the absolute directory as a bind mount
+    stdin_open: true # -i allow the container to be able to be open for input
+    tty: true # -t allow the container to be able to be attached to via the terminal
+    depends_on: # this service depends on the backend service to be up and running already
+      - backend
+    env_file:
+      - './frontend/.env' # load environment variables from a file  
+    networks: # you dont need to define a network because docker compose automatically creates a network for you a new environment for all the services specified in this compose file and it will add all the services to that network 
+      - todo-net # now frontend is added to the default network && goals-net network too
+
+
+volumes: # you have to define all the used name volumes  in the compose file 
+  database:
+
+networks:
+  todo-net: # name of the network
+
+
+# docker-compose up # this will create the containers and start them
+# docker-compose down # this will stop the containers and remove them
+# docker-compose rm # this will remove the containers but not the volumes
+# docker-compose ps # this will show the status of the containers
+# docker-compose logs # this will show the logs of the containers
+# docker-compose exec # this will run a command in the container

@@ -118,6 +118,7 @@
   }
   .message {
     padding-top: 10px;
+    margin-bottom: -30px;
     text-align: center;
     color: #f44;
   }

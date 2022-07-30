@@ -3,7 +3,8 @@
   const dispatch = createEventDispatcher();
   export let pageLength, currentPage;
 
-  const pageArr = Array.from({ length: pageLength }, (v, i) => i);
+
+  $: pageArr = Array.from({ length: pageLength }, (v, i) => i);
 
   function triggerUpdate(page) {
     dispatch("triggerFlip", { page: page });
@@ -14,10 +15,10 @@
   {#each pageArr as page (page)}
     {#if page === currentPage}
       <button class="page choosen" on:click={() => triggerUpdate(page)}
-        >{page}</button
+        >{page+1}</button
       >
     {:else}
-      <button class="page" on:click={() => triggerUpdate(page)}>{page}</button>
+      <button class="page" on:click={() => triggerUpdate(page)}>{page+1}</button>
     {/if}
   {/each}
 </div>
