@@ -1,4 +1,4 @@
-name: ci
+name: todo-backend-docker-image-push
 
 on:
   push:

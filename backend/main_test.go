@@ -91,20 +91,7 @@ func TestGetAllTodos(t *testing.T) {
 }
 
 func TestGetTodoByID(t *testing.T) {
-	// Create a request to pass to our handler.
-	t.Run("returns todo by using GetTodo?id=2 with http ok", func(t *testing.T) {
-		// We use http.NewRequest to create a request. The first argument is the request's method and the second is the request's path. The nil argument refers to the request's body, which we don't need to set in this case.
-		request, _ := http.NewRequest(http.MethodGet, "/api/v1/todo", nil)
 
-		// In order to test our server, we will need a Request to send in and we'll want to spy on what our handler writes to the ResponseWriter
-		response := httptest.NewRecorder()
-		q := request.URL.Query()
-		q.Add("id", "1")
-		request.URL.RawQuery = q.Encode()
-		controllers.GetTodoHandler(response, request)
-
-		assertStatus(t, response.Code, http.StatusOK)
-	})
 	t.Run("returns todo by using GetTodo with http method not allowed", func(t *testing.T) {
 		// We use http.NewRequest to create a request. The first argument is the request's method and the second is the request's path. The nil argument refers to the request's body, which we don't need to set in this case.
 		request, _ := http.NewRequest(http.MethodPost, "/api/v1/todo", nil)
