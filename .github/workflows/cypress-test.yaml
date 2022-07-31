@@ -2,7 +2,7 @@ name: run my vanilla Cypress tests
 on: 
   push:
     branches:
-      - 'main'
+      - 'master'
   workflow_dispatch:
 
 jobs:
