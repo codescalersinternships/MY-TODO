@@ -1,24 +1,21 @@
-name: Cypress Tests
-
-on: [push]
+name: run my vanilla Cypress tests
+on: 
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch:
 
 jobs:
-  cypress-run:
+  checkout-and-test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+
+      - name: Check out repository code
         uses: actions/checkout@v2
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Setup node
-        uses: actions/setup-node@v3
+
+      - name: run cypress tests with firefox
+        uses: cypress-io/github-action@v2
+        timeout-minutes: 10
         with:
-          node-version: 16.x
-        working-directory: ./frontend-testing
-        run : npm install  
-
-
-      - name: Cypress run
-        uses: cypress-io/github-action@v4
-        working-directory: ./frontend-testing
-        run: npm run test
+          browser: firefox
