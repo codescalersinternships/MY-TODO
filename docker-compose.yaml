@@ -38,6 +38,27 @@ services: # these services run in --rm  mode always by default , it runs in atta
     networks: # you dont need to define a network because docker compose automatically creates a network for you a new environment for all the services specified in this compose file and it will add all the services to that network 
       - todo-net # now frontend is added to the default network && goals-net network too
 
+  cypress: # cypress service container
+    build: # build the image from the Dockerfile in the current directory
+      context: ./frontend-testing # the path of the directory that contains dockerfile
+      dockerfile: Dockerfile # the Dockerfile to use
+      # tag: frontend # tag the image as frontend  
+    image: todo-frontend-testing:v1 # we specify the image to use , it will be looked up locally and in Docker Hub Repository  
+    container_name: 'frontend-testing' # name of the container
+    ports: # ports to expose on the container
+      - "6000:6000"
+    volumes:
+      - ./frontend/src:/usr/src/app/src # mount the relative directory as a bind mount
+      - /usr/src/app/node_modules # mount the absolute directory as a bind mount
+    stdin_open: true # -i allow the container to be able to be open for input
+    tty: true # -t allow the container to be able to be attached to via the terminal
+    depends_on: # this service depends on the backend service to be up and running already
+      - backend
+    env_file:
+      - './frontend/.env' # load environment variables from a file  
+    networks: # you dont need to define a network because docker compose automatically creates a network for you a new environment for all the services specified in this compose file and it will add all the services to that network 
+      - todo-net # now frontend is added to the default network && goals-net network too
+
 
 volumes: # you have to define all the used name volumes  in the compose file 
   database:

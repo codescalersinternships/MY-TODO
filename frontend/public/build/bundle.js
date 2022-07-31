@@ -7242,10 +7242,10 @@ var app = (function () {
     			t = space();
     			if_block1.c();
     			attr_dev(div0, "class", /*dialogClass*/ ctx[2]);
+    			attr_dev(div0, "role", "dialog");
     			attr_dev(div0, "aria-modal", "true");
     			attr_dev(div0, "aria-labelledby", /*titleId*/ ctx[3]);
     			attr_dev(div0, "data-testid", "dialog-core__dialog");
-    			attr_dev(div0, "role", "dialog");
     			add_location(div0, file$a, 127, 2, 2691);
     			attr_dev(div1, "class", /*overlayClass*/ ctx[1]);
     			attr_dev(div1, "data-testid", "dialog-core__overlay");
