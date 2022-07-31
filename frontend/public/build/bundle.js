@@ -8586,7 +8586,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (65:0) {:else}
+    // (66:0) {:else}
     function create_else_block$1(ctx) {
     	let div3;
     	let div2;
@@ -8648,13 +8648,13 @@ var app = (function () {
     			t6 = space();
     			create_component(paging.$$.fragment);
     			attr_dev(div0, "class", "status-buttons");
-    			add_location(div0, file$7, 67, 6, 2247);
+    			add_location(div0, file$7, 68, 6, 2268);
     			attr_dev(div1, "class", "count");
-    			add_location(div1, file$7, 70, 6, 2351);
+    			add_location(div1, file$7, 71, 6, 2372);
     			attr_dev(div2, "class", "status svelte-43psse");
-    			add_location(div2, file$7, 66, 4, 2220);
+    			add_location(div2, file$7, 67, 4, 2241);
     			attr_dev(div3, "class", "list svelte-43psse");
-    			add_location(div3, file$7, 65, 2, 2197);
+    			add_location(div3, file$7, 66, 2, 2218);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, div3, anchor);
@@ -8732,14 +8732,14 @@ var app = (function () {
     		block,
     		id: create_else_block$1.name,
     		type: "else",
-    		source: "(65:0) {:else}",
+    		source: "(66:0) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (63:0) {#if error || $TodoListStore.length === 0}
+    // (64:0) {#if error || $TodoListStore.length === 0}
     function create_if_block$4(ctx) {
     	let p;
     	let t0;
@@ -8751,7 +8751,7 @@ var app = (function () {
     			t0 = text("No Items Exist ");
     			t1 = text(/*error*/ ctx[1]);
     			attr_dev(p, "class", "list-status svelte-43psse");
-    			add_location(p, file$7, 63, 2, 2137);
+    			add_location(p, file$7, 64, 2, 2158);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, p, anchor);
@@ -8772,14 +8772,14 @@ var app = (function () {
     		block,
     		id: create_if_block$4.name,
     		type: "if",
-    		source: "(63:0) {#if error || $TodoListStore.length === 0}",
+    		source: "(64:0) {#if error || $TodoListStore.length === 0}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (73:4) {#each filteredTodoList.slice(3 * currentPage, 3 * (currentPage + 1)) as todo, index (todo.ID)}
+    // (74:4) {#each filteredTodoList.slice(3 * currentPage, 3 * (currentPage + 1)) as todo, index (todo.ID)}
     function create_each_block(key_1, ctx) {
     	let div;
     	let item;
@@ -8807,7 +8807,7 @@ var app = (function () {
     		c: function create() {
     			div = element("div");
     			create_component(item.$$.fragment);
-    			add_location(div, file$7, 73, 6, 2526);
+    			add_location(div, file$7, 74, 6, 2547);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -8854,7 +8854,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(73:4) {#each filteredTodoList.slice(3 * currentPage, 3 * (currentPage + 1)) as todo, index (todo.ID)}",
+    		source: "(74:4) {#each filteredTodoList.slice(3 * currentPage, 3 * (currentPage + 1)) as todo, index (todo.ID)}",
     		ctx
     	});
 
@@ -8983,6 +8983,7 @@ var app = (function () {
 
     		$$invalidate(3, tasksCount = $TodoListStore.length);
     		$$invalidate(2, tasksDone = $TodoListStore.filter(t => t.status === true).length);
+    		$$invalidate(5, currentPage = 0);
     	}
 
     	// Updating Tasks

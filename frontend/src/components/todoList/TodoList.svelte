@@ -34,6 +34,8 @@
     tasksDone = $TodoListStore.filter(
       (t: TodoType) => t.status === true
     ).length;
+     
+    currentPage = 0;
   }
 
   // Updating Tasks
