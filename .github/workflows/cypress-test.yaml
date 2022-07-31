@@ -10,9 +10,15 @@ jobs:
         uses: actions/checkout@v2
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+        working-directory: ./frontend-testing
+        run : npm install  
+
+
       - name: Cypress run
         uses: cypress-io/github-action@v4
-        with:
-          working-directory: ./frontend-testing
-          build: npm run build
-          start: npm start
+        working-directory: ./frontend-testing
+        run: npm run test
