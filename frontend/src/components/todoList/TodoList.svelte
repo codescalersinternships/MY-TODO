@@ -7,41 +7,22 @@
   import SettingsApi from "../settings/SettingsApi";
   import Item from "./Item.svelte";
   import Paging from "./Paging.svelte";
+  import StatusFilter from "../filters/StatusFilter.svelte";
   let error = "";
 
   // Getting tasks
-onMount(async function () {
+  onMount(async function () {
     try {
       // todo make it uuid
       SettingsApi.updateSettings();
-      // todo set it to store
-      console.log("before request @TODOLIST.svelte", $TodoListStore);
-      console.log("before request @TODOLIST.svelte", $SettingsStore);
-
       let todoList = (
         await TodosDataService.getByAuthor($SettingsStore["name"])
       ).data;
-
       TodoListStore.set(todoList);
-
-      console.log("after request @TODOLIST.svelte", $TodoListStore);
-      console.log(
-        "after request @TODOLIST.svelte requested todolist",
-        todoList
-      );
-      console.log(
-        "after request @TODOLIST.svelte name",
-        $SettingsStore["name"]
-      );
     } catch (err) {
       error = err.message;
     }
   });
-  $: tasksCount = $TodoListStore.length;
-  $: tasksDone = $TodoListStore.filter(
-    (t: TodoType) => t.status === true
-  ).length;
-
   // Deleting Tasks
   async function handleDeleteItem(event: { detail: { id: number } }) {
     let id = event.detail.id;
@@ -51,9 +32,8 @@ onMount(async function () {
     TodoListStore.set($TodoListStore.filter((t: TodoType) => t.ID !== id));
     tasksCount = $TodoListStore.length;
     tasksDone = $TodoListStore.filter(
-    (t: TodoType) => t.status === true
-  ).length;
-
+      (t: TodoType) => t.status === true
+    ).length;
   }
 
   // Updating Tasks
@@ -65,7 +45,7 @@ onMount(async function () {
     let task = event.detail.task;
 
     await TodosDataService.update(id, {
-      ID:id,
+      ID: id,
       author: $SettingsStore["name"],
       status: status,
       task: task,
@@ -77,27 +57,43 @@ onMount(async function () {
       )
     );
     tasksDone = $TodoListStore.filter(
+      (t: TodoType) => t.status === true
+    ).length;
+  }
+
+  $: currentPage = 0;
+  $: filteredTodoList = $TodoListStore;
+  function triggerFlip(event: { detail: { page: number } }) {
+    currentPage = event.detail.page;
+  }
+  function handleStatus(event: { detail: { status: boolean } }) {
+    let status = event.detail.status;
+    if (status === null) {
+      filteredTodoList = $TodoListStore;
+      return;
+    }
+
+    filteredTodoList = $TodoListStore.filter(
+      (t: TodoType) => t.status === status
+    );
+  }
+  $: tasksCount = $TodoListStore.length;
+  $: tasksDone = $TodoListStore.filter(
     (t: TodoType) => t.status === true
   ).length;
-  }
-
-  
-  $: currentPage=0;
-
-function triggerFlip(event:{detail: {page: number}}) {
-  currentPage = event.detail.page;
-  }
 </script>
 
-{#if error || $TodoListStore.length === 0 || !tasksCount}
+{#if error || $TodoListStore.length === 0}
   <p class="list-status">No Items Exist {error}</p>
 {:else}
   <div class="list">
     <div class="status">
-      <div class="date" />
+      <div class="status-buttons">
+        <StatusFilter on:handleStatus={handleStatus} />
+      </div>
       <div class="count">Tasks : {tasksDone}/{tasksCount}</div>
     </div>
-    {#each $TodoListStore.slice(3*currentPage, 3*(currentPage+1)) as todo, index (todo.ID)}
+    {#each filteredTodoList.slice(3 * currentPage, 3 * (currentPage + 1)) as todo, index (todo.ID)}
       <div in:scale out:fade={{ duration: 400 }}>
         <Item
           counter={index + 1}
@@ -110,7 +106,11 @@ function triggerFlip(event:{detail: {page: number}}) {
         />
       </div>
     {/each}
-    <Paging  pageLength={Math.ceil(tasksCount / 3)} on:triggerFlip={triggerFlip} currentPage={currentPage}/>
+    <Paging
+      pageLength={Math.ceil(filteredTodoList.length / 3)}
+      on:triggerFlip={triggerFlip}
+      {currentPage}
+    />
   </div>
 {/if}
 

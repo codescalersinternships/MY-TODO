@@ -126,7 +126,8 @@
     width: 100px;
     height: 40px;
     cursor: pointer;
-    background-color: #343446;
+    background-color: var(--primary-color);
+    color: var(--text-color);
   }
   .btnDisabled {
     opacity: 0.2;
@@ -139,7 +140,10 @@
   }
   .correct-input {
     border: #6f6 2px solid;
+
   }
+
+
   .wrong-input {
     border: #f44 2px solid;
   }

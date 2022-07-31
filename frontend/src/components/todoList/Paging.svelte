@@ -37,12 +37,20 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     cursor: pointer;
-    color: #ccc;
-    background-color: #202142;
+    
+    color:var(--text-color);
+    color: #202142;
+
+    background-color: var(--primary-color);
+
     text-align: center;
+    
   }
   .choosen {
-    background-color: #fff;
-    color: #202142;
+    background-color: var(--secondary-color) !important;
+
+
+
+
   }
 </style>
