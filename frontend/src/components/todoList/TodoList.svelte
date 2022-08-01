@@ -24,18 +24,25 @@
     }
   });
   // Deleting Tasks
-  async function handleDeleteItem(event: { detail: { id: number } }) {
-    let id = event.detail.id;
-    // parse string to int
-    await TodosDataService.delete(id);
-    // todo set it to store
-    TodoListStore.set($TodoListStore.filter((t: TodoType) => t.ID !== id));
-    tasksCount = $TodoListStore.length;
-    tasksDone = $TodoListStore.filter(
-      (t: TodoType) => t.status === true
-    ).length;
-     
-    currentPage = 0;
+  async function handleDeleteItem(event: { detail: { id: string } }) {
+    let id: string = event.detail.id;
+    try {
+      alert(id);
+      // parse string to int
+      await TodosDataService.delete(parseInt(id));
+      // todo set it to store
+      TodoListStore.set(
+        $TodoListStore.filter((t: TodoType) => t.ID !== parseInt(id))
+      );
+      tasksCount = $TodoListStore.length;
+      tasksDone = $TodoListStore.filter(
+        (t: TodoType) => t.status === true
+      ).length;
+
+      currentPage = 0;
+    } catch (err) {
+      error = err.message + "@DELETE";
+    }
   }
 
   // Updating Tasks
@@ -45,13 +52,16 @@
     let id = event.detail.id;
     let status = event.detail.status;
     let task = event.detail.task;
-
-    await TodosDataService.update(id, {
-      ID: id,
-      author: $SettingsStore["name"],
-      status: status,
-      task: task,
-    });
+    try {
+      await TodosDataService.update(id, {
+        ID: id,
+        author: $SettingsStore["name"],
+        status: status,
+        task: task,
+      });
+    } catch (err) {
+      error = err.message + " @update";
+    }
 
     TodoListStore.set(
       $TodoListStore.map((t: TodoType) =>
@@ -79,6 +89,7 @@
       (t: TodoType) => t.status === status
     );
   }
+
   $: tasksCount = $TodoListStore.length;
   $: tasksDone = $TodoListStore.filter(
     (t: TodoType) => t.status === true
@@ -95,19 +106,21 @@
       </div>
       <div class="count">Tasks : {tasksDone}/{tasksCount}</div>
     </div>
-    {#each filteredTodoList.slice(3 * currentPage, 3 * (currentPage + 1)) as todo, index (todo.ID)}
-      <div in:scale out:fade={{ duration: 400 }}>
-        <Item
-          counter={index + 1}
-          id={todo.ID}
-          task={todo.task}
-          status={todo.status}
-          CreatedAt={todo.CreatedAt}
-          on:delete={handleDeleteItem}
-          on:update={handleUpdateItem}
-        />
-      </div>
-    {/each}
+    <div id="todos3">
+      {#each filteredTodoList.slice(3 * currentPage, 3 * (currentPage + 1)) as todo, index (todo.ID)}
+        <div in:scale out:fade={{ duration: 400 }} >
+          <Item
+            counter={index + 1}
+            id={todo.ID}
+            task={todo.task}
+            status={todo.status}
+            CreatedAt={todo.CreatedAt}
+            on:delete={handleDeleteItem}
+            on:update={handleUpdateItem}
+          />
+        </div>
+      {/each}
+    </div>
     <Paging
       pageLength={Math.ceil(filteredTodoList.length / 3)}
       on:triggerFlip={triggerFlip}
@@ -135,7 +148,7 @@
   .list-status {
     margin: 0;
     text-align: center;
-    color: #ffffff;
+    color: var(--text-color);
     font-weight: bold;
     font-size: 1.1em;
   }

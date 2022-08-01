@@ -19,7 +19,7 @@
   }
 </script>
 
-<div class="item" class:status on:dblclick={handleDoubleClick}>
+<div class="item" class:status>
   {counter} .&nbsp;&nbsp;&nbsp;&nbsp;
   <input
     class="text-input"
@@ -36,6 +36,7 @@
     bind:checked={status}
     on:change={() => triggerUpdate()}
   />
+  <button id="close" on:click={handleDoubleClick}>X</button>
   <span class="created-at"> {new Date(CreatedAt).toLocaleDateString("en-US")}</span>
 </div>
 
@@ -49,6 +50,17 @@
     font-size: 1.2rem;
     margin-bottom: 0.6rem;
     border-bottom: #222 2px solid;
+  }
+  
+  #close {
+    position: relative;
+    top: -25px;
+    font-weight: bold;
+    left: 70px;
+    cursor: pointer;
+    color:var(--text-color);
+    background: none;
+    border: none;
   }
   .created-at {
     font-size: 0.8rem;

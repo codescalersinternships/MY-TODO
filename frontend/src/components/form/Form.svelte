@@ -55,7 +55,7 @@
 <Card>
   <header>
     <h2>
-      Hello , {name}
+      Hello 👋, {name}
     </h2>
   </header>
   <form on:submit|preventDefault={handleSubmit}>
@@ -67,8 +67,9 @@
         placeholder="Write your ideas now !"
         maxlength="30"
         minlength="10"
+        id="inputField"
       />
-      <button disabled={btnDisabled} class:btnDisabled type="submit">
+      <button disabled={btnDisabled} class:btnDisabled id="submit" type="submit">
         Submit
         <i class="fa-regular fa-plus icon" />
       </button>

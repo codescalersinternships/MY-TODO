@@ -14,7 +14,7 @@
 <div class="pages">
   {#each pageArr as page (page)}
     {#if page === currentPage}
-      <button class="page choosen" on:click={() => triggerUpdate(page)}
+      <button class="page choosen" id={"page"+(page+1)} on:click={() => triggerUpdate(page)}
         >{page+1}</button
       >
     {:else}

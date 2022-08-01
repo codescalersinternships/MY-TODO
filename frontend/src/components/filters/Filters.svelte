@@ -1,11 +1,12 @@
 <script lang="ts">
   import DateFilter from "./DateFilter.svelte";
-  /* sort by date
-function sortByDate() {
+// sort by date
+/* function sortByDate() {
     $TodoListStore.sort((a: TodoType, b: TodoType): number => {
       return new Date(b.CreatedAt) - new Date(a.CreatedAt);
     });
   }
+  
 // filter by date range
 function filterByDateRange() {
     $TodoListStore.filter((t: TodoType) => {
@@ -14,15 +15,7 @@ function filterByDateRange() {
     });
   }
   
-  // sort by complete status
-function sortByComplete(a: TodoType, b: TodoType) {
-    $TodoListStore.sort((x, y) => {
-      // true values first
-      return x === y ? 0 : x ? -1 : 1;
-      // false values first
-      // return (x === y)? 0 : x? 1 : -1;
-    });
-  } */
+ */
 </script>
 
 <div class="filters">
