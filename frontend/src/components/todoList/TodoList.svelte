@@ -27,7 +27,7 @@
   async function handleDeleteItem(event: { detail: { id: string } }) {
     let id: string = event.detail.id;
     try {
-      alert(id);
+    
       // parse string to int
       await TodosDataService.delete(parseInt(id));
       // todo set it to store
