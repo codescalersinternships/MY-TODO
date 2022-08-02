@@ -84,7 +84,7 @@
       filteredTodoList = $TodoListStore;
       return;
     }
-
+    
     filteredTodoList = $TodoListStore.filter(
       (t: TodoType) => t.status === status
     );
