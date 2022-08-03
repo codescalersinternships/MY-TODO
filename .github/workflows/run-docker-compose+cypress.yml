@@ -38,7 +38,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: cd into frontend-testing
-        run: cd frontend-testing  
+        run: echo $(ls) 
       - name: Running Cypress tests
         uses: cypress-io/github-action@v4
         with:
